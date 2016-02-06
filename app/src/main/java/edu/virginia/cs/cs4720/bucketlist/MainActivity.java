@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,7 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener mMessageClickHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            Toast.makeText(getApplicationContext(), itemList.get(position), Toast.LENGTH_SHORT).show();
+            CheckedTextView checkedTextView = (CheckedTextView)v;
+            boolean itemIsChecked = ((CheckedTextView) v).isChecked();
+            if(!itemIsChecked) {
+                Toast.makeText(getApplicationContext(), itemList.get(position).substring(4) + " completed!", Toast.LENGTH_SHORT).show();
+            }
+            ((CheckedTextView) v).setChecked(!itemIsChecked);
         }
     };
 
@@ -96,35 +102,35 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+/*
     public void addItem(View view) {
         EditText editText = (EditText)findViewById(R.id.textView);
         itemList.add(editText.getText().toString());
         adapter.notifyDataSetChanged();
         Log.d("BuildingListView", itemList.toString());
-    }
+    }*/
 
     private void displayList() {
         ArrayList<String> thingsToDo = new ArrayList<String>();
-        itemList.add("Visit Monticello");
-        itemList.add("Hug Ms. Kathy");
-        itemList.add("Pick apples at Carter's Mountain");
-        itemList.add("Volunteer through Madison House");
-        itemList.add("Stargaze on the Lawn");
-        itemList.add("Tube down the James River");
-        itemList.add("Visit Carr's Hill");
-        itemList.add("Relive O'Hill Brunch");
-        itemList.add("Ice skate Downtown");
-        itemList.add("Eat at a food truck");
-        itemList.add("Make a poster for a basketball game");
-        itemList.add("Attend Tom Tom Festival");
-        itemList.add("Celebrate Lighting of the Lawn");
-        itemList.add("Play in Mad Bowl");
-        itemList.add("Run the 4th Year 5K");
-        itemList.add("Jam at Fridays After Five");
-        itemList.add("Appreciate a horse at Foxfield");
-        itemList.add("Eat at Duck Donuts");
-        itemList.add("Witness a Probate");
-        itemList.add("Visit a Pavilion Resident");
+        itemList.add(" 1. Visit Monticello");
+        itemList.add(" 2. Hug Ms. Kathy");
+        itemList.add(" 3. Pick apples at Carter's Mountain");
+        itemList.add(" 4. Volunteer through Madison House");
+        itemList.add(" 5. Stargaze on the Lawn");
+        itemList.add(" 6. Tube down the James River");
+        itemList.add(" 7. Visit Carr's Hill");
+        itemList.add(" 8. Relive O'Hill Brunch");
+        itemList.add(" 9. Ice skate Downtown");
+        itemList.add("10. Eat at a food truck");
+        itemList.add("11. Make a poster for a basketball game");
+        itemList.add("12. Attend Tom Tom Festival");
+        itemList.add("13. Celebrate Lighting of the Lawn");
+        itemList.add("14. Play in Mad Bowl");
+        itemList.add("15. Run the 4th Year 5K");
+        itemList.add("16. Jam at Fridays After Five");
+        itemList.add("17. Appreciate a horse at Foxfield");
+        itemList.add("18. Eat at Duck Donuts");
+        itemList.add("19. Witness a Probate");
+        itemList.add("20. Visit a Pavilion Resident");
     }
 }

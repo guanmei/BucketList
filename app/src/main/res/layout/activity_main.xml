@@ -40,7 +40,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
 
-    <EditText
+  <!--  <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:text="Add Item"
         android:id="@+id/button"
-        android:onClick="addItem"/>
+        android:onClick="addItem"/>-->
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
