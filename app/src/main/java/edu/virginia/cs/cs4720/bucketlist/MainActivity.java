@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
             ((CheckedTextView) v).setChecked(!itemIsChecked);
         }
+
     };
 
     @Override
