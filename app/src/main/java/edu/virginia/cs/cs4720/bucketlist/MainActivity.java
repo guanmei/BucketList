@@ -1,6 +1,5 @@
 package edu.virginia.cs.cs4720.bucketlist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -21,14 +20,13 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> itemList = new ArrayList<String>();
     ArrayList<ListItem> bucketList = new ArrayList<ListItem>();
-    ArrayAdapter<String> adapter;
+    CheckAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        adapter = new ArrayAdapter<String>(this, R.layout.checkview, R.id.text_view, itemList);
+        adapter = new CheckAdapter(this, bucketList);
 
         listView.setOnItemClickListener(mMessageClickHandler);
         listView.setAdapter(adapter);
@@ -51,13 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     private AdapterView.OnItemClickListener mMessageClickHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-//            CheckedTextView checkedTextView = (CheckedTextView)v;
-//            boolean itemIsChecked = ((CheckedTextView) v).isChecked();
-//            if(!itemIsChecked) {
-//            Toast.makeText(getApplicationContext(), itemList.get(position).substring(4) + " completed!", Toast.LENGTH_SHORT).show();
-         //   Toast.makeText(getApplicationContext(), "Test", Toast.LENGTH_SHORT).show();
-//            }
-//            ((CheckedTextView) v).setChecked(!itemIsChecked);
             System.out.println("adapter listener");
             Intent intent = new Intent(v.getContext(), DisplayListItem.class);
             ListItem selectedItem = bucketList.get((int)id);
@@ -70,33 +61,43 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    private class CheckAdapter extends ArrayAdapter<String> {
+    private class CheckAdapter extends ArrayAdapter<ListItem> {
+
+        public CheckAdapter(Context context, ArrayList<ListItem> objects) {
+            super(context, R.layout.checkview, R.id.text_view, objects);
+        }
 
         private class ViewHolder {
             TextView name;
             CheckBox check;
         }
 
-        public CheckAdapter(Context context, ArrayList<String> objects) {
-            super(context, R.layout.checkview, R.id.text_view, objects);
-        }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            String str = itemList.get(position);
-            ViewHolder holder;
+            final ListItem l = bucketList.get(position);
+            final ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.checkview, parent, false);
-                viewHolder.name = (TextView) convertView.findViewById(R.id.text_view);
-                viewHolder.check = (CheckBox) convertView.findViewById(R.id.cbox);
+                holder.name = (TextView) convertView.findViewById(R.id.text_view);
+                holder.check = (CheckBox) convertView.findViewById(R.id.cbox);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            //Stuff here
+            holder.check.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    l.completed = !l.completed;
+                }
+            });
+            holder.check.setChecked(l.completed);
+
+            holder.name.setText(l.title);
+
+            return convertView;
         }
     }
 
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         boolean completed = data.getBooleanExtra("completed", false);
         ListItem listItem = bucketList.get(id);
         listItem.completed = completed;
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -175,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             li.id = Integer.parseInt(sc.nextLine());
             li.title = sc.nextLine();
             li.description = sc.nextLine();
+            li.completed = false;
             itemList.add(li.title);
             bucketList.add(li);
         }

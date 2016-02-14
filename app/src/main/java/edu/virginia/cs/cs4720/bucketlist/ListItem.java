@@ -6,9 +6,13 @@ package edu.virginia.cs.cs4720.bucketlist;
  * POJO for the to-do items in the bucket list
  */
 public class ListItem {
-
     int id;
     boolean completed;
     String title;
     String description;
+
+    @Override
+    public String toString() {
+        return title;
+    }
 }
