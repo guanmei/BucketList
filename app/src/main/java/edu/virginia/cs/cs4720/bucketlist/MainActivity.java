@@ -1,16 +1,21 @@
 package edu.virginia.cs.cs4720.bucketlist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -47,6 +52,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+
+
+    private class CheckAdapter extends ArrayAdapter<String> {
+
+        private class ViewHolder {
+            TextView name;
+            CheckBox check;
+        }
+
+        public CheckAdapter(Context context, ArrayList<String> objects) {
+            super(context, R.layout.checkview, R.id.text_view, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            String str = itemList.get(position);
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(R.layout.checkview, parent, false);
+                viewHolder.name = (TextView) convertView.findViewById(R.id.text_view);
+                viewHolder.check = (CheckBox) convertView.findViewById(R.id.cbox);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            //Stuff here
+        }
+    }
 
     @Override
     protected void onStart() {
