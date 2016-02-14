@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/title"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/title"
+        android:layout_marginTop="10dip"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/toggleSwitch"
+        android:showText="true"
+        android:text="Have you participated in this crucial UVa undergraduate experience?"
+        android:textOn="Yes"
+        android:textOff="No"
+        android:layout_below="@id/description"
+        android:layout_marginTop="10dip"/>
+
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:onClick="returnOnClick"
+        android:text="Return to Home Page"
+        android:layout_below="@id/toggleSwitch"
+        android:layout_marginTop="10dip" />
+
+</RelativeLayout>
