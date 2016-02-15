@@ -54,8 +54,17 @@
         android:id="@+id/button"
         android:onClick="addItem"/>-->
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/title"
+        android:gravity="center_horizontal"
+        android:text="20 Things to Do at UVa before You Graduate" />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:id="@+id/fragment"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment"
         android:name="edu.virginia.cs.cs4720.bucketlist.MainFragment"
         tools:layout="@layout/fragment_main" android:layout_width="match_parent"
         android:layout_height="match_parent" />

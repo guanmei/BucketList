@@ -35,7 +35,8 @@
         android:textOn="Yes"
         android:textOff="No"
         android:layout_below="@id/description"
-        android:layout_marginTop="10dip"/>
+        android:layout_marginTop="10dip"
+        android:thumbTextPadding="10px" />
 
     <Button
         android:id="@+id/returnButton"
