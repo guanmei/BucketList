@@ -19,13 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> itemList = new ArrayList<String>();
-    ArrayList<ListItem> bucketList = new ArrayList<ListItem>();
+    ArrayList<ListItem> bucketList;
     CheckAdapter adapter;
 
     @Override
@@ -34,22 +35,35 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Bucket List", "MainActivity onCreate");
         setContentView(R.layout.activity_main);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        adapter = new CheckAdapter(this, bucketList);
+        //if the device was just rotated, reuse bucketList
+        if(savedInstanceState != null) {
+            bucketList = (ArrayList<ListItem>) savedInstanceState.getSerializable("bucketList");
 
-        listView.setOnItemClickListener(mMessageClickHandler);
-        listView.setAdapter(adapter);
+            ListView listView = (ListView) findViewById(R.id.listView);
+            adapter = new CheckAdapter(this, bucketList);
 
-        try {
-            displayList();
-        } catch (IOException e) {
-            e.printStackTrace();
+            listView.setOnItemClickListener(mMessageClickHandler);
+            listView.setAdapter(adapter);
+        }
+        else {
+            bucketList = new ArrayList<ListItem>();
+
+            ListView listView = (ListView) findViewById(R.id.listView);
+            adapter = new CheckAdapter(this, bucketList);
+
+            listView.setOnItemClickListener(mMessageClickHandler);
+            listView.setAdapter(adapter);
+
+            try {
+                displayList();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private AdapterView.OnItemClickListener mMessageClickHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
-            System.out.println("adapter listener");
             Intent intent = new Intent(v.getContext(), DisplayListItem.class);
             ListItem selectedItem = bucketList.get((int)id);
             intent.putExtra("id", selectedItem.id);
@@ -101,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * saves bucketList for when the activity gets destroyed and restarted (i.e. when the
+     * tablet is rotated)
+     * @param outState
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("bucketList", bucketList);
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         int id = data.getIntExtra("id", 0);
@@ -113,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //should go through bucketList and set checkboxes
         Log.i("Bucket List", "MainActivity onStart");
     }
 
@@ -163,13 +187,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void checkboxOnClick(View v) {
-        CheckBox checkbox = (CheckBox)findViewById(R.id.cbox);
-        System.out.println("other listener");
-    }
-
+    /**
+     * parses the list of things to do from a textfile and creates a ListItem object
+     * @throws IOException
+     */
     private void displayList() throws IOException {
-        ArrayList<String> thingsToDo = new ArrayList<String>();
         AssetManager am = this.getAssets();
         Scanner sc = new Scanner(am.open("ListItems.txt"));
         while(sc.hasNext()) {
@@ -178,29 +200,8 @@ public class MainActivity extends AppCompatActivity {
             li.title = sc.nextLine();
             li.description = sc.nextLine();
             li.completed = false;
-            itemList.add(li.title);
             bucketList.add(li);
         }
         sc.close();
-   /*     itemList.add("Visit Monticello");
-        itemList.add("Hug Ms. Kathy");
-        itemList.add("Pick apples at Carter's Mountain");
-        itemList.add("Volunteer through Madison House");
-        itemList.add("Stargaze on the Lawn");
-        itemList.add("Tube down the James River");
-        itemList.add("Visit Carr's Hill");
-        itemList.add("Relive O'Hill Brunch");
-        itemList.add("Ice skate Downtown");
-        itemList.add("Eat at a food truck");
-        itemList.add("Make a poster for a basketball game");
-        itemList.add("Attend Tom Tom Festival");
-        itemList.add("Celebrate Lighting of the Lawn");
-        itemList.add("Play in Mad Bowl");
-        itemList.add("Run the 4th Year 5K");
-        itemList.add("Jam at Fridays After Five");
-        itemList.add("Appreciate a horse at Foxfield");
-        itemList.add("Eat at Duck Donuts");
-        itemList.add("Witness a Probate");
-        itemList.add("Visit a Pavilion Resident");*/
     }
 }
